@@ -8,6 +8,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import static com.bit.utilities.ReusableFunctions.*;
+import static com.bit.utilities.ReusableFunctions.isElementPresent;
 
 public class ReusableLibraryTest extends BaseTest {
 
@@ -58,7 +59,30 @@ public class ReusableLibraryTest extends BaseTest {
 
     }
 
+    @Test
+    public void waitForElementToBeVisibleTest()
+    {
 
+        String url = "https://the-internet.herokuapp.com/add_remove_elements/";
+        int waitTime = Integer.parseInt(config.getProperty("waitTime"));
+        driver.get(url);
+        WebElement elm=driver.findElement(By.xpath("/html/body/div[2]/div/div/button"));
+        if(isElementPresent(driver,By.xpath("/html/body/div[2]/div/div/button"),waitTime)) {
+            elm.click();
+            System.out.println("Clicked on Add Element button");
+        }
+        else
+            System.out.println("Element not found");
+        if(waitForElementToBeVisible(driver,By.xpath("/html/body/div[2]/div/div/div/button"),waitTime))
+        {
+            driver.findElement(By.xpath("/html/body/div[2]/div/div/div/button")).click();
+            System.out.println("Clicked on Delete button");
+        }
+        else
+            System.out.println("Element not found");
+        Assert.assertFalse(isElementPresent(driver, By.xpath("/html/body/div[2]/div/div/div/button"),waitTime));
+
+    }
 
 
 
